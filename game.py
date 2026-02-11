@@ -19,7 +19,7 @@ class ConnectFourGame:
             while True: # loop until valid input
                 userInput = input("Where would you like to play: ")
                 try:
-                    col = validate_input(userInput, int, min_val=0, max_val=6)
+                    col = validate_int(userInput, min_val=0, max_val=6)
                     break
                 except ValidationError as e:
                     print(e)
