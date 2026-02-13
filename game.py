@@ -11,34 +11,76 @@ class ConnectFourGame:
 
     
     
-    def start(self):
-        # self.board.display()
+    def start(self, turn):
+
+        #if turn == 0:
+        #        CPU_col = CPU_Choice(self.board)
+        #        self.board.add_piece(0, CPU_col)
+        
+        self.board.display()
+
+
         playing = True
         while playing: # main game loop
+            
 
             while True: # loop until valid input
                 userInput = input("Where would you like to play: ")
                 try:
-                    col = validate_int(userInput, min_val=0, max_val=6)
+                    Player_Col = validate_int(userInput, min_val=0, max_val=6)
                     break
                 except ValidationError as e:
                     print(e)
 
-            valid = self.board.add_piece(col)
+            valid = self.board.add_piece(1, Player_Col)
             if not valid:
                 continue
 
             self.board.display()
-            # check win
+            winner = self.board.check_winner(1)
+            if winner:
+                playing = False
+                print("Player Wins!")
+                break
 
-            # CPU turn here
+            # CPU_col = CPU_Choice(self.board)
+            # self.board.add_piece(0, CPU_col)
 
             self.board.display()
-            # check win
+            winner = self.board.check_winner(0)
+            if winner:
+                playing = False
+                print("CPU Wins!")
+                break
+
 
         
     
 if __name__ == "__main__":
-    # prompt
-    game = ConnectFourGame()
-    game.start()
+    running = True
+    while running:
+        game = ConnectFourGame()
+        while True: # loop until valid input
+            userInput = input("Would you like to go first? (y or n): ")
+            try:
+                userInput = validate_char(userInput, {'y', 'n'})
+                break
+            except ValidationError as e:
+                print(e)
+        if userInput == 'y':
+            game.start(1)
+        elif userInput == 'n':
+            game.start(0)
+        
+        while True: # loop until valid input
+            userInput = input("Would you like to play again? (y or n): ")
+            try:
+                userInput = validate_char(userInput, {'y', 'n'})
+                break
+            except ValidationError as e:
+                print(e)
+        if userInput == 'n':
+            print("Thanks For Playing!")
+            running = False
+            break
+    
