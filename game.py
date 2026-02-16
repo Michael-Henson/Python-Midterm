@@ -1,4 +1,5 @@
 from board import ConnectFourBoard
+from cpu import CPUPlayer
 from input_validator import validate_input, validate_char, validate_int, ValidationError
 
 class ConnectFourGame:
@@ -13,9 +14,9 @@ class ConnectFourGame:
     
     def start(self, turn):
 
-        #if turn == 0:
-        #        CPU_col = CPU_Choice(self.board)
-        #        self.board.add_piece(0, CPU_col)
+        if turn == 0:
+                CPU_col = CPUPlayer.CPU_Choice(self.board)
+                self.board.add_piece(0, CPU_col)
         
         self.board.display()
 
@@ -36,15 +37,15 @@ class ConnectFourGame:
             if not valid:
                 continue
 
-            self.board.display()
+            # self.board.display()
             winner = self.board.check_winner(1)
             if winner:
                 playing = False
                 print("Player Wins!")
                 break
 
-            # CPU_col = CPU_Choice(self.board)
-            # self.board.add_piece(0, CPU_col)
+            CPU_col = CPUPlayer.CPU_Choice(self.board)
+            self.board.add_piece(0, CPU_col)
 
             self.board.display()
             winner = self.board.check_winner(0)
@@ -53,9 +54,6 @@ class ConnectFourGame:
                 print("CPU Wins!")
                 break
 
-
-        
-    
 if __name__ == "__main__":
     running = True
     while running:
