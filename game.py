@@ -1,6 +1,7 @@
 from board import ConnectFourBoard
-from cpu import CPUPlayer
+from cpu import CPU_Choice
 from input_validator import validate_input, validate_char, validate_int, ValidationError
+import os
 
 class ConnectFourGame:
     """Represents a Connect 4 game. Manages board and players."""
@@ -15,8 +16,7 @@ class ConnectFourGame:
     def start(self, turn):
 
         if turn == 0:
-                CPU_col = CPUPlayer.CPU_Choice(self.board)
-                self.board.add_piece(0, CPU_col)
+                self.board.make_move(3, 0)
         
         self.board.display()
 
@@ -33,28 +33,43 @@ class ConnectFourGame:
                 except ValidationError as e:
                     print(e)
 
-            valid = self.board.add_piece(1, Player_Col)
-            if not valid:
+            try:
+                self.board.make_move(Player_Col, 1)
+            except ValueError as e:
+                print(e)
                 continue
 
             # self.board.display()
-            winner = self.board.check_winner(1)
-            if winner:
+
+            if self.board.check_winner(1):
                 playing = False
                 print("Player Wins!")
                 break
 
-            CPU_col = CPUPlayer.CPU_Choice(self.board)
-            self.board.add_piece(0, CPU_col)
+            if self.board.is_full():
+                playing = False
+                print("Tie Game!")
+                break
+
+            CPU_col = CPU_Choice(self.board)
+            self.board.make_move(CPU_col, 0)
+
+            os.system('cls')
 
             self.board.display()
-            winner = self.board.check_winner(0)
-            if winner:
+
+            if self.board.check_winner(0):
                 playing = False
                 print("CPU Wins!")
                 break
 
+            if self.board.is_full():
+                playing = False
+                print("Tie Game!")
+                break
+
 if __name__ == "__main__":
+    os.system('cls')
     running = True
     while running:
         game = ConnectFourGame()

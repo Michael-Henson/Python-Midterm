@@ -1,7 +1,6 @@
 from CPUMinMax import MinMax
-class CPUPlayer:
 
-    def CPU_Choice(board):
-        choice1 = MinMax.MinMaxCalculate(board)
-        # run top down minmax
-        return 0
+engine = MinMax(depth=9)
+
+def CPU_Choice(board):
+    return engine.MinMaxCalculate(board)

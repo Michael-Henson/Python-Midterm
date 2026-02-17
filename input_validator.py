@@ -83,6 +83,7 @@ def validate_char(value, allowed=None, case_sensitive=False):
     :param allowed: list/set of allowed characters
     :return: validated character
     """
+    value = value.strip()
     if not isinstance(value, str) or len(value) != 1:
         raise ValidationError("Input must be a single character.")
 
