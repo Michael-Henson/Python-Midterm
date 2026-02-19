@@ -27,14 +27,12 @@ class ConnectFourBoard:
             print("|")
         print(" 0 1 2 3 4 5 6")
 
-    def is_self_occupied(self, turn, col, row): # returns True if that tile is occupied by the turn passed to it
+    # returns True if that tile is occupied by the turn passed to it
+    def is_self_occupied(self, turn, col, row):
         if turn == 0: # CUP check
-            return (self.cpu_board >> (col * 7 + row)) & 1
+            return bool((self.cpu_board >> (col * 7 + row)) & 1)
         if turn == 1: # Player check
-            return (self.player_board >> (col * 7 + row)) & 1
-    
-    def is_occupied(self, col, row): # not used at the moment
-        return ((self.player_board | self.cpu_board) >> (col * 7 + row)) & 1
+            return bool((self.player_board >> (col * 7 + row)) & 1)
     
     def check_winner(self, turn: int) -> bool:
         """

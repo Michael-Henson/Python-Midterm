@@ -30,25 +30,6 @@ def validate_int(value, min_val=None, max_val=None):
 
     return value
 
-
-def validate_float(value, min_val=None, max_val=None):
-    """
-    Validate that value can be converted to a float and falls within a range.
-    """
-    try:
-        value = float(value)
-    except (TypeError, ValueError):
-        raise ValidationError("Input must be a number.")
-
-    if min_val is not None and value < min_val:
-        raise ValidationError(f"Input must be >= {min_val}.")
-
-    if max_val is not None and value > max_val:
-        raise ValidationError(f"Input must be <= {max_val}.")
-
-    return value
-
-
 def validate_string(value, allowed=None, case_sensitive=False):
     """
     Validate a string against allowed values.
@@ -88,24 +69,3 @@ def validate_char(value, allowed=None, case_sensitive=False):
         raise ValidationError("Input must be a single character.")
 
     return validate_string(value, allowed, case_sensitive)
-
-
-def validate_input(value, expected_type, **kwargs):
-    """
-    Generic validator dispatcher.
-
-    :param value: input value
-    :param expected_type: int, float, str, or 'char'
-    :param kwargs: validation options (min_val, max_val, allowed, etc.)
-    :return: validated value
-    """
-    if expected_type == int:
-        return validate_int(value, **kwargs)
-    elif expected_type == float:
-        return validate_float(value, **kwargs)
-    elif expected_type == str:
-        return validate_string(value, **kwargs)
-    elif expected_type == "char":
-        return validate_char(value, **kwargs)
-    else:
-        raise ValidationError("Unsupported type.")
