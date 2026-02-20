@@ -1,0 +1,118 @@
+:root {
+  --cell: 64px;
+  --gap: 10px;
+}
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  margin: 0;
+  background: #0b1020;
+  color: #e9eefc;
+}
+
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1 {
+  margin: 0 0 14px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.status {
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  flex: 1;
+}
+
+button {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.10);
+  color: #e9eefc;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.16);
+}
+
+.boardWrap {
+  position: relative;
+  display: inline-block;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(7, var(--cell));
+  grid-template-rows: repeat(6, var(--cell));
+  gap: var(--gap);
+  padding: 12px;
+  border-radius: 16px;
+  background: #1231a8;
+}
+
+.cell {
+  width: var(--cell);
+  height: var(--cell);
+  border-radius: 999px;
+  background: #0b1020;
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  user-select: none;
+}
+
+.cell.player {
+  background: #e74c3c;
+}
+
+.cell.cpu {
+  background: #f1c40f;
+}
+
+.colOverlay {
+  position: absolute;
+  inset: 16px; /* match boardWrap padding */
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(7, var(--cell));
+  gap: var(--gap);
+  padding: 12px; /* match board padding */
+}
+
+.colHit {
+  pointer-events: auto;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.0);
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.colHit:hover {
+  background: rgba(255,255,255,0.10);
+}
+
+.hint {
+  opacity: 0.85;
+  margin-top: 10px;
+  font-size: 14px;
+}
