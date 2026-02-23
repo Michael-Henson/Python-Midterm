@@ -5,3 +5,5 @@ If the player goes first, the player should have to play perfectly in order to w
 The program is a little slow on certain moves.
 
 The program can be used by running the game.py file. 
+python game.py
+
