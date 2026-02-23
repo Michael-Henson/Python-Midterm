@@ -1,6 +1,6 @@
 :root {
-  --cell: 64px;
-  --gap: 10px;
+  --cell: min(12vw, 64px);
+  --gap: min(2vw, 10px);
 }
 
 body {

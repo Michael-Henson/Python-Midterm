@@ -13,7 +13,7 @@ class MinMax:
     """
 
     # TT flags
-    depth = 16 # determines how deep the algorithm scans. Larger number is smarter but slower
+    depth_max = 16 # determines how deep the algorithm scans. Larger number is smarter but slower
     
     EXACT = 0
     LOWER = 1
@@ -79,10 +79,10 @@ class MinMax:
         # variable depth
         if moves_played < 8:
             max_depth = 8 # opening: doesnt need to go past opening book
-        elif empties <= 16:
+        elif empties <= self.depth_max:
             max_depth = empties # endgame: doent need to extened past the end of the game
         else:
-            max_depth = 16 # midmage: past opening book before endgame
+            max_depth = self.depth_max # midmage: past opening book before endgame
 
         # TT size cap
         if len(self.tt) > 2_000_000:

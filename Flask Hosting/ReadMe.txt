@@ -1,4 +1,6 @@
+rmdir /s /q venv
 python -m venv venv
+
 
 Run this
 .\venv\Scrpits\activate

@@ -13,7 +13,7 @@ class MinMax:
     """
 
     # TT flags
-    depth = 8 # determines how deep the algorithm scans. Larger number is smarter but slower
+    depth_max = 8 # determines how deep the algorithm scans. Larger number is smarter but slower
     
     EXACT = 0
     LOWER = 1
@@ -27,11 +27,9 @@ class MinMax:
     MATE_SCORE = 10_000_000 # largest score
     BOOK_SCORE = 5_000_000  # below mate score, above heuristic
 
-    def __init__(self):
-        # key -> (depth, flag, value, best_move)
-        # value is stored in the negamax-return convention (score for side-to-move after sign),
-        # which is made consistent by deriving sign from to_move.
-        self.tt = {}
+    def __init__(self, shared_tt=None, tt_lock=None):
+        self.tt = shared_tt if shared_tt is not None else {}
+        self.tt_lock = tt_lock
 
     def tt_key(self, board, to_move: int):
         # IMPORTANT: This assumes score sign is derived from to_move inside _negamax.
@@ -79,10 +77,10 @@ class MinMax:
         # variable depth
         if moves_played < 8:
             max_depth = 8 # opening: doesnt need to go past opening book
-        elif empties <= 16:
+        elif empties <= self.depth_max:
             max_depth = empties # endgame: doent need to extened past the end of the game
         else:
-            max_depth = 16 # midmage: past opening book before endgame
+            max_depth = self.depth_max # midmage: past opening book before endgame
 
         # TT size cap
         if len(self.tt) > 2_000_000:
@@ -204,7 +202,11 @@ class MinMax:
         key = self.tt_key(board, to_move)
 
         # --- TT lookup (bounds + best move) ---
-        tt_entry = self.tt.get(key)
+        if self.tt_lock:
+            with self.tt_lock:
+                tt_entry = self.tt.get(key)
+        else:
+            tt_entry = self.tt.get(key)
         tt_best = None
         alpha_orig = alpha
         beta_orig = beta
@@ -286,7 +288,11 @@ class MinMax:
         else:
             flag = self.EXACT
 
-        self.tt[key] = (depth, flag, best_value, best_move)
+        if self.tt_lock:
+            with self.tt_lock:
+                self.tt[key] = (depth, flag, best_value, best_move)
+        else:
+            self.tt[key] = (depth, flag, best_value, best_move)
         return best_value
 
     # ---------- Heuristic evaluation ----------
